@@ -744,7 +744,7 @@ async function loadUpdates(){
         await response.text();
 
         const rows =
-        parseCSV(csv).slice(1);
+        parseCSV(csv);
 
         container.innerHTML = "";
 
@@ -1491,13 +1491,68 @@ function buildBellScheduleData(rows){
 
     const schedules = {};
     const lastPeriodBySchedule = {};
+    const headers =
+    rows[0] || [];
+
+    const hasHeaderRow =
+    headers.some(header => normalizeSheetHeader(header) === "schedulename")
+    || headers.some(header => normalizeSheetHeader(header) === "period");
+
+    const dataRows =
+    hasHeaderRow ? rows.slice(1) : rows;
+
+    const scheduleIndex =
+    hasHeaderRow
+    ? getSheetColumnIndex(headers, ["ScheduleName", "Schedule Name", "Schedule"], 0)
+    : 0;
+
+    const periodIndex =
+    hasHeaderRow
+    ? getSheetColumnIndex(headers, ["Period"], 1)
+    : 1;
+
+    const startIndex =
+    hasHeaderRow
+    ? getSheetColumnIndex(headers, ["StartTime", "Start Time"], 2)
+    : 2;
+
+    const endIndex =
+    hasHeaderRow
+    ? getSheetColumnIndex(headers, ["EndTime", "End Time"], 3)
+    : 3;
+
+    const notesIndex =
+    hasHeaderRow
+    ? getSheetColumnIndex(headers, ["Notes"], 4)
+    : 4;
+
+    const lunchGroupIndex =
+    hasHeaderRow
+    ? getSheetColumnIndex(headers, ["LunchGroup", "Lunch Group"], 5)
+    : 5;
+
+    const lunchStartIndex =
+    hasHeaderRow
+    ? getSheetColumnIndex(headers, ["LunchStart", "Lunch Start"], 6)
+    : 6;
+
+    const lunchEndIndex =
+    hasHeaderRow
+    ? getSheetColumnIndex(headers, ["LunchEnd", "Lunch End"], 7)
+    : 7;
+
+    const lunchRoomsIndex =
+    hasHeaderRow
+    ? getSheetColumnIndex(headers, ["LunchRooms", "Lunch Rooms"], 8)
+    : 8;
+
     let lastScheduleName =
     "Regular Bell Schedule";
 
-    rows.forEach((row) => {
+    dataRows.forEach((row) => {
 
         const rawScheduleName =
-        String(row[0] || "").trim();
+        String(getSheetCell(row, scheduleIndex) || "").trim();
 
         const scheduleName =
         rawScheduleName || lastScheduleName || "Regular Bell Schedule";
@@ -1508,28 +1563,28 @@ function buildBellScheduleData(rows){
         }
 
         const period =
-        row[1] || "";
+        getSheetCell(row, periodIndex) || "";
 
         const startTime =
-        row[2] || "";
+        getSheetCell(row, startIndex) || "";
 
         const endTime =
-        row[3] || "";
+        getSheetCell(row, endIndex) || "";
 
         const notes =
-        row[4] || "";
+        getSheetCell(row, notesIndex) || "";
 
         const lunchGroup =
-        row[5] || "";
+        getSheetCell(row, lunchGroupIndex) || "";
 
         const lunchStart =
-        row[6] || "";
+        getSheetCell(row, lunchStartIndex) || "";
 
         const lunchEnd =
-        row[7] || "";
+        getSheetCell(row, lunchEndIndex) || "";
 
         const lunchRooms =
-        row[8] || "";
+        getSheetCell(row, lunchRoomsIndex) || "";
 
         const hasPeriodDetails =
         period || startTime || endTime || notes;
@@ -1818,6 +1873,9 @@ function renderBellSchedule(scheduleName){
                     <div class="bell-period-lunch-row">
                         <strong>${escapeHTML(lunch.group || "Lunch")}</strong>
                         <span>${escapeHTML(formatTimeRange(lunch.start, lunch.end))}</span>
+                        ${lunch.rooms ? `
+                        <small>${escapeHTML(lunch.rooms)}</small>
+                        ` : ""}
                     </div>
 
                 `).join("")}

@@ -8192,3 +8192,25 @@ body.dark-mode .exam-prep-section .section-heading p{color:rgba(255,255,255,.68)
         justify-content:flex-start !important;
     }
 }
+
+/* MAY 21 BELL SHEET MATCHING */
+.bell-period-lunch-row small{
+    grid-column:1 / -1;
+    color:var(--muted) !important;
+    display:block;
+    font-size:.66rem;
+    font-weight:700;
+    line-height:1.25;
+    overflow-wrap:anywhere;
+}
+
+@media (max-width:768px){
+    .bell-period-lunch-row small{
+        display:-webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+        font-size:.47rem !important;
+        line-height:1.1 !important;
+    }
+}
