@@ -8214,3 +8214,66 @@ body.dark-mode .exam-prep-section .section-heading p{color:rgba(255,255,255,.68)
         line-height:1.1 !important;
     }
 }
+
+/* MAY 21 BELL CLIPPING FIX */
+.bell-card,
+.bell-card .bell-schedule-list,
+.bell-period-row,
+.bell-period-lunches,
+.bell-period-lunch-row{
+    overflow:visible !important;
+}
+
+.bell-card .bell-schedule-list{
+    max-height:none !important;
+    height:auto !important;
+    flex:0 0 auto !important;
+}
+
+.bell-period-row{
+    height:auto !important;
+    max-height:none !important;
+}
+
+.bell-period-lunches{
+    grid-auto-rows:auto !important;
+}
+
+.bell-period-lunch-row{
+    min-height:auto !important;
+}
+
+.bell-period-lunch-row small{
+    font-size:.58rem !important;
+    line-height:1.15 !important;
+    opacity:.9;
+}
+
+@media (max-width:768px){
+    .bell-card .bell-schedule-list{
+        gap:4px !important;
+    }
+
+    .bell-period-row{
+        padding:5px 6px !important;
+    }
+
+    .bell-period-lunches{
+        gap:3px !important;
+        margin-top:4px !important;
+        padding-top:4px !important;
+    }
+
+    .bell-period-lunch-row{
+        padding:4px 5px !important;
+    }
+
+    .bell-period-lunch-row small{
+        display:block !important;
+        font-size:.42rem !important;
+        line-height:1.05 !important;
+        white-space:nowrap;
+        overflow:hidden !important;
+        text-overflow:ellipsis;
+    }
+}
